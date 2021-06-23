@@ -47,22 +47,27 @@ def Player(turn):
             return next_
         else:
             filled = True
-            
 def game():
     XO = {'\033[038;2;255;102;102mX\033[0;0m':'\033[038;2;102;199;255mO\033[0;0m', '\033[038;2;102;199;255mO\033[0;0m':'\033[038;2;255;102;102mX\033[0;0m'}
     turn = choice(list(XO.keys()))
     run = True
+    count = 0
     while run:
         if turn == '/033[038;2;255;187;0mX/033[0;0m':
             move = Player(turn)
         else:
             move = Player(turn)
+        count += 1
         Board[move] = turn
         win = CheckWin()
         if win:
             DisplayBoard(Board)
             print("\n\033[038;2;255;175;36m-{} \033[038;2;255;175;36mWin-\n\033[0;0m".format(turn))
             run = False
+        if all(Board[i] != ' ' for i in Board.keys()):
+            DisplayBoard(Board)
+            print("\n\033[038;2;255;175;36m-Draw!-\n\033[0;0m".format(turn))
+            run = False
         turn = XO[turn]
-
+    repeat()
 game()
