@@ -1,78 +1,68 @@
 #Python 3.9.5
 #Compute by Ace Fhid
 from random import choice
+
 Board = {
     '7':' ', '8':' ', '9':' ',
     '4':' ', '5':' ', '6':' ',
     '1':' ', '2':' ', '3':' ',
 }
-#Clear the board
-def clear():
-    for i in Board:
-        Board[i] = ' '
 def DisplayBoard(board):
-    print('{}|{}|{}'.format(board['7'], board['8'], board['9']))
-    print('-+-+-')
-    print('{}|{}|{}'.format(board['4'], board['5'], board['6']))
-    print('-+-+-')
-    print('{}|{}|{}'.format(board['1'], board['2'], board['3']))
-def CheckWin(board):
+    print('\033[038;2;255;175;36m{}\033[038;2;255;175;36m|{}\033[038;2;255;175;36m|{}'.format(board['7'], board['8'], board['9']))
+    print('\033[038;2;255;175;36m-+-+-')
+    print('\033[038;2;255;175;36m{}\033[038;2;255;175;36m|{}\033[038;2;255;175;36m|{}'.format(board['4'], board['5'], board['6']))
+    print('\033[038;2;255;175;36m-+-+-')
+    print('\033[038;2;255;175;36m{}\033[038;2;255;175;36m|{}\033[038;2;255;175;36m|{}\033[0;0m'.format(board['1'], board['2'], board['3']))
+def CheckWin():
     win = False
-    #Horizontal win check
-    if board['7'] == board['8'] == board['9'] != ' ' or board['4'] == board['5'] == board['6'] != ' ' or board['1'] == board['2'] == board['3'] != ' ':
+    if Board['7'] == Board['8'] == Board['9'] != ' ' or Board['4'] == Board['5'] == Board['6'] != ' ' or Board['1'] == Board['2'] == Board['3'] != ' ':
         win = True
-    #Vertical win Check
-    elif board['8'] == board['5'] == board['2'] != ' ' or board['7'] == board['4'] == board['1'] != ' ' or board['9'] == board['6'] == board['3'] != ' ':
+    elif Board['8'] == Board['5'] == Board['2'] != ' ' or Board['7'] == Board['4'] == Board['1'] != ' ' or Board['9'] == Board['6'] == Board['3'] != ' ':
         win = True
-    elif board['7'] == board['5'] == board['3'] != ' ':
+    elif Board['7'] == Board['5'] == Board['3'] != ' ':
         win = True
-    elif board['9'] == board['5'] == board['1'] != ' ':
+    elif Board['9'] == Board['5'] == Board['1'] != ' ':
         win = True
     return win
-def Game():
-    XO = {'X':'O', 'O':'X'}
-    turn = choice(list(XO.keys()))
-    #random turn
-    count = 0
+def repeat():
+    Repeat = input("Wanna Repeat(y/n):")
+    if Repeat.lower() == 'y' or repeat == 1:
+        game()
+    elif Repeat.lower() == 'y' or repeat == 1:
+        print("Good Bye")
+def Player(turn):
+    DisplayBoard(Board)
     running = True
-    win = False
-    run = True
     filled = False
     while running:
-        DisplayBoard(Board)
-        if filled == False:
-            text = "It's your turn {}. Move to which place?\n".format(turn)
+        if not filled:
+            txt = "{}\033[038;2;128;230;255m turn. Move to which place?".format(turn)
         else:
-            text = "That place is already filled. Move to another place.\n"
-        move = input(text)
-        if Board[move] == ' ':
-            filled = False
-            Board[move] = turn
-            count += 1
+            txt = "\033[038;2;255;128;128mCan't place there. Move to other place"
+        print(txt)
+        next_ = input("Enter Move : ")
+        if next_.lower() == "end":
+            raise SystemExit
+        if Board[next_] == ' ':
+            return next_
         else:
             filled = True
-            continue
-        win = CheckWin(Board)
-        if count >= 5 and win:
-            DisplayBoard(Board)
-            print("-{} Win-".format(turn))
-            break
-        #Check for tie
-        if all(key != ' ' for key in Board) and count >= 9:
-            DisplayBoard(Board)
-            print("-Tie-")
-            break
-        turn = XO[turn]
+            
+def game():
+    XO = {'\033[038;2;255;102;102mX\033[0;0m':'\033[038;2;102;199;255mO\033[0;0m', '\033[038;2;102;199;255mO\033[0;0m':'\033[038;2;255;102;102mX\033[0;0m'}
+    turn = choice(list(XO.keys()))
+    run = True
     while run:
-        Again = input("Play Again? (y/n): ").lower()
-        if Again == 'y':
-            clear()
-            Game()
-            run = False
-        elif Again == 'n':
-            print("Good bye")
-            run = False
+        if turn == '/033[038;2;255;187;0mX/033[0;0m':
+            move = Player(turn)
         else:
-            print("Wrong Input")
-            continue
-Game()
+            move = Player(turn)
+        Board[move] = turn
+        win = CheckWin()
+        if win:
+            DisplayBoard(Board)
+            print("\n\033[038;2;255;175;36m-{} \033[038;2;255;175;36mWin-\n\033[0;0m".format(turn))
+            run = False
+        turn = XO[turn]
+
+game()
