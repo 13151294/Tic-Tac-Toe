@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
-public class Human_Java {
+public class Normal_Java {
     
     public static HashMap<Integer,Character> Board = new HashMap<Integer,Character>();
     public static Scanner PlayerInput = new Scanner(System.in);
