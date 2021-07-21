@@ -20,7 +20,6 @@ public class Normal_Java {
             PrintBoard();
             System.out.print("Enter Position : ");
             var cmd = PlayerInput.nextInt();
-            System.out.println(cmd);
             if (cmd < 1 || cmd > 9) {
                 System.out.println("Index Out Of Range");
             }else if (Board.get(cmd) == ' ') {
@@ -29,8 +28,14 @@ public class Normal_Java {
             } else {
                 System.out.println("That Place Is Already Filled");
             }
+        }  
+    }
+    public static boolean CheckFull() {
+        boolean draw = false;
+        if (!(Board.values().contains(' '))) {
+            draw = true;
         }
-        
+        return draw;
     }
     static boolean CheckWin(Character turn) {
         Integer[][] WinList = {{1,2,3},{4,5,6},{7,8,9},{7,4,1},{8,5,2},{9,6,3},{7,5,3},{9,5,1},};
@@ -48,15 +53,21 @@ public class Normal_Java {
         HashMap<Character,Character> turn_dict = new HashMap<Character,Character>();turn_dict.put(x, o);turn_dict.put(o, x);
         var turn = x;
         boolean win = false;
+        boolean draw = false;
         for (int i = 1; i <= 9; i++) {
             Board.put(i, ' ');
         }
-        while (!win) {
+        while (!(win || draw)) {
             turn = turn_dict.get(turn);
             Player(turn);
             win = CheckWin(turn);
+            draw = CheckFull();
         }
         PrintBoard();
-        System.out.println(String.format("%s Win!!", turn));
+        if (!draw && win) {
+           System.out.println(String.format("\n%s Win!!", turn)); 
+        } else {
+            System.out.println("\nDraw");
+        }
     }
 }
